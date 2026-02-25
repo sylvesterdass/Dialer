@@ -21,8 +21,23 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Set up Gradle
-        uses: gradle/gradle-build-action@v3
+      - name: Set up Gradle and tools
+        run: |
+          # Install required tools
+          sudo apt-get update -qq
+          sudo apt-get install -y coreutils util-linux findutils
+          
+          # Download and setup Gradle
+          mkdir -p /opt/gradle
+          cd /opt/gradle
+          wget -q https://services.gradle.org/distributions/gradle-9.2.1-bin.zip
+          unzip -q gradle-9.2.1-bin.zip
+          rm gradle-9.2.1-bin.zip
+          
+          # Add to PATH and verify
+          echo "/opt/gradle/gradle-9.2.1/bin" >> $GITHUB_PATH
+          export PATH="/opt/gradle/gradle-9.2.1/bin:$PATH"
+          gradle --version
 
       - name: Install Android SDK command-line tools and packages
         run: |
