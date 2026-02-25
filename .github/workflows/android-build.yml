@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      ANDROID_SDK_ROOT: ${{ runner.workspace }}/android-sdk
 
     steps:
       - name: Checkout
@@ -19,10 +21,29 @@ jobs:
           distribution: temurin
           java-version: '17'
 
+      - name: Install Android SDK command-line tools and packages
+        run: |
+          set -e
+          SDK_ROOT="$ANDROID_SDK_ROOT"
+          mkdir -p "$SDK_ROOT"
+          mkdir -p "$SDK_ROOT/cmdline-tools"
+          # download and install command line tools
+          curl -sSfL https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -o /tmp/cmdline.zip
+          unzip -q -o /tmp/cmdline.zip -d /tmp/cmdline
+          mkdir -p "$SDK_ROOT/cmdline-tools/latest"
+          mv /tmp/cmdline/cmdline-tools/* "$SDK_ROOT/cmdline-tools/latest/" || true
+          rm -rf /tmp/cmdline /tmp/cmdline.zip
+          export PATH="$SDK_ROOT/cmdline-tools/latest/bin:$PATH"
+          yes | sdkmanager --sdk_root="$SDK_ROOT" "platform-tools" "platforms;android-33" "build-tools;33.0.2"
+
       - name: Grant gradlew execute
         run: chmod +x gradlew
 
       - name: Build debug APK
+        env:
+          ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
+          ANDROID_SDK_ROOT: ${{ env.ANDROID_SDK_ROOT }}
+          PATH: ${{ env.ANDROID_SDK_ROOT }}/platform-tools:${{ env.PATH }}
         run: ./gradlew assembleDebug --no-daemon
 
       - name: Upload APK artifact
