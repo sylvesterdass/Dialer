@@ -8,9 +8,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: sh
     env:
       ANDROID_SDK_ROOT: ${{ github.workspace }}/android-sdk
 
@@ -46,6 +43,9 @@ jobs:
           echo -e "\n24333f8a63b6825ea9c5514f83c2829b004d1fee" > "$SDK_ROOT/licenses/android-sdk-license"
           echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$SDK_ROOT/licenses/android-google-tv-license"
           echo -e "\n7e7f75d18550e0f0f59b66fb1e3cc28a51e2e82a" > "$SDK_ROOT/licenses/google-gdk-license"
+
+      - name: Regenerate Gradle wrapper
+        run: gradle wrapper --gradle-version 9.2.1
 
       - name: Build debug APK
         env:
