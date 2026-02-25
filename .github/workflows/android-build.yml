@@ -63,7 +63,7 @@ jobs:
         env:
           ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
           ANDROID_SDK_ROOT: ${{ env.ANDROID_SDK_ROOT }}
-          PATH: ${{ env.ANDROID_SDK_ROOT }}/platform-tools:${{ env.PATH }}
+          PATH: /opt/gradle/gradle-9.2.1/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${{ env.ANDROID_SDK_ROOT }}/platform-tools
         run: gradle assembleDebug --no-daemon
 
       - name: Upload APK artifact
