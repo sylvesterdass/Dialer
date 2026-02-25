@@ -22,11 +22,7 @@ jobs:
           java-version: '17'
 
       - name: Install Gradle
-        run: |
-          wget -q https://services.gradle.org/distributions/gradle-9.2.1-all.zip -O /tmp/gradle.zip
-          unzip -q /tmp/gradle.zip -d /opt
-          rm /tmp/gradle.zip
-          echo "/opt/gradle-9.2.1/bin" >> $GITHUB_PATH
+        uses: gradle/gradle-build-action@v3
 
       - name: Install Android SDK command-line tools and packages
         run: |
