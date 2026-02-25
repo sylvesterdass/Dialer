@@ -40,7 +40,12 @@ jobs:
           mv /tmp/cmdline/cmdline-tools/* "$SDK_ROOT/cmdline-tools/latest/" || true
           rm -rf /tmp/cmdline /tmp/cmdline.zip
           export PATH="$SDK_ROOT/cmdline-tools/latest/bin:$PATH"
-          yes | sdkmanager --sdk_root="$SDK_ROOT" "platform-tools" "platforms;android-33" "build-tools;33.0.2"
+          sdkmanager --sdk_root="$SDK_ROOT" "platform-tools" "platforms;android-33" "build-tools;33.0.2"
+          # Accept licenses without using 'yes' to avoid broken pipe
+          mkdir -p "$SDK_ROOT/licenses"
+          echo -e "\n24333f8a63b6825ea9c5514f83c2829b004d1fee" > "$SDK_ROOT/licenses/android-sdk-license"
+          echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$SDK_ROOT/licenses/android-google-tv-license"
+          echo -e "\n7e7f75d18550e0f0f59b66fb1e3cc28a51e2e82a" > "$SDK_ROOT/licenses/google-gdk-license"
 
       - name: Build debug APK
         env:
