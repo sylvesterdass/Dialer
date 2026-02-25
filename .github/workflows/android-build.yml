@@ -22,12 +22,7 @@ jobs:
           java-version: '17'
 
       - name: Set up Gradle
-        run: |
-          cd /tmp
-          curl -fsSL https://services.gradle.org/distributions/gradle-9.2.1-bin.zip -o gradle.zip
-          unzip -q gradle.zip
-          rm gradle.zip
-          echo "/tmp/gradle-9.2.1/bin" >> $GITHUB_PATH
+        uses: gradle/gradle-build-action@v3
 
       - name: Install Android SDK command-line tools and packages
         run: |
@@ -49,7 +44,7 @@ jobs:
           ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
           ANDROID_SDK_ROOT: ${{ env.ANDROID_SDK_ROOT }}
           PATH: ${{ env.ANDROID_SDK_ROOT }}/platform-tools:${{ env.PATH }}
-        run: gradle assembleDebug --no-daemon
+        run: chmod +x gradlew && ./gradlew assembleDebug --no-daemon
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
