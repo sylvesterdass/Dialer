@@ -23,8 +23,11 @@ jobs:
 
       - name: Set up Gradle
         run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y gradle
+          cd /tmp
+          curl -fsSL https://services.gradle.org/distributions/gradle-9.2.1-bin.zip -o gradle.zip
+          unzip -q gradle.zip
+          rm gradle.zip
+          echo "/tmp/gradle-9.2.1/bin" >> $GITHUB_PATH
 
       - name: Install Android SDK command-line tools and packages
         run: |
