@@ -36,15 +36,12 @@ jobs:
           export PATH="$SDK_ROOT/cmdline-tools/latest/bin:$PATH"
           yes | sdkmanager --sdk_root="$SDK_ROOT" "platform-tools" "platforms;android-33" "build-tools;33.0.2"
 
-      - name: Grant gradlew execute
-        run: chmod +x gradlew
-
       - name: Build debug APK
         env:
           ANDROID_HOME: ${{ env.ANDROID_SDK_ROOT }}
           ANDROID_SDK_ROOT: ${{ env.ANDROID_SDK_ROOT }}
           PATH: ${{ env.ANDROID_SDK_ROOT }}/platform-tools:${{ env.PATH }}
-        run: ./gradlew assembleDebug --no-daemon
+        run: gradle assembleDebug --no-daemon
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
