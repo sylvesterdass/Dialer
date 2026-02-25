@@ -22,7 +22,9 @@ jobs:
           java-version: '17'
 
       - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v2
+        run: |
+          apt-get update -qq
+          apt-get install -y gradle
 
       - name: Install Android SDK command-line tools and packages
         run: |
